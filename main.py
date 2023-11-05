@@ -55,6 +55,30 @@ exchanges_HOOK = {
     "Gate": "https://api.gateio.ws/api/v4/spot/tickers?currency_pair=HOOK_USDT"
 }
 
+exchanges_DASH = {
+    "Binance": "https://api.binance.com/api/v3/ticker/bookTicker?symbol=DASHUSDT",
+    "KuCoin": "https://api.kucoin.com/api/v1/market/orderbook/level1?symbol=DASH-USDT",
+    "Bybit": "https://api.bybit.com/v2/public/tickers?symbol=DASHUSDT",
+    "Huobi": "https://api.huobi.pro/market/detail/merged?symbol=dashusdt",
+    "Gate": "https://api.gateio.ws/api/v4/spot/tickers?currency_pair=DASH_USDT"
+}
+
+exchanges_DODO = {
+    "Binance": "https://api.binance.com/api/v3/ticker/bookTicker?symbol=DODOUSDT",
+    "KuCoin": "https://api.kucoin.com/api/v1/market/orderbook/level1?symbol=DODO-USDT",
+    "Bybit": "https://api.bybit.com/v2/public/tickers?symbol=DODOUSDT",
+    "Huobi": "https://api.huobi.pro/market/detail/merged?symbol=dodousdt",
+    "Gate": "https://api.gateio.ws/api/v4/spot/tickers?currency_pair=DODO_USDT"
+}
+
+exchanges_EGLD = {
+    "Binance": "https://api.binance.com/api/v3/ticker/bookTicker?symbol=EGLDUSDT",
+    "KuCoin": "https://api.kucoin.com/api/v1/market/orderbook/level1?symbol=EGLD-USDT",
+    "Bybit": "https://api.bybit.com/v2/public/tickers?symbol=EGLDUSDT",
+    "Huobi": "https://api.huobi.pro/market/detail/merged?symbol=egldusdt",
+    "Gate": "https://api.gateio.ws/api/v4/spot/tickers?currency_pair=EGLD_USDT"
+}
+
 # Функция для получения курсов с разных бирж
 def get_price(exchange, url):
     response = requests.get(url)
@@ -111,6 +135,21 @@ while True:
         ask, bid = get_price(exchange, url)
         prices_HOOK[exchange] = {'ask': ask, 'bid': bid}
 
+    prices_DASH = {}
+    for exchange, url in exchanges_DASH.items():
+        ask, bid = get_price(exchange, url)
+        prices_DASH[exchange] = {'ask': ask, 'bid': bid}
+
+    prices_DODO = {}
+    for exchange, url in exchanges_DODO.items():
+        ask, bid = get_price(exchange, url)
+        prices_DODO[exchange] = {'ask': ask, 'bid': bid}
+
+    prices_EGLD = {}
+    for exchange, url in exchanges_EGLD.items():
+        ask, bid = get_price(exchange, url)
+        prices_EGLD[exchange] = {'ask': ask, 'bid': bid}
+
     # Поиск наилучшей цены для покупки и продажи
     best_bid_SOL = max(prices_SOL.items(), key=lambda x: x[1]['bid'])
     best_ask_SOL = min(prices_SOL.items(), key=lambda x: x[1]['ask'])
@@ -132,6 +171,15 @@ while True:
 
     best_bid_HOOK = max(prices_HOOK.items(), key=lambda x: x[1]['bid'])
     best_ask_HOOK = min(prices_HOOK.items(), key=lambda x: x[1]['ask'])
+
+    best_bid_DASH = max(prices_DASH.items(), key=lambda x: x[1]['bid'])
+    best_ask_DASH = min(prices_DASH.items(), key=lambda x: x[1]['ask'])
+
+    best_bid_DODO = max(prices_DODO.items(), key=lambda x: x[1]['bid'])
+    best_ask_DODO = min(prices_DODO.items(), key=lambda x: x[1]['ask'])
+
+    best_bid_EGLD = max(prices_EGLD.items(), key=lambda x: x[1]['bid'])
+    best_ask_EGLD = min(prices_EGLD.items(), key=lambda x: x[1]['ask'])
 
     if best_bid_SOL[1]['bid'] > best_ask_SOL[1]['ask']:
         print('🛑SOLANA🛑')
@@ -172,6 +220,24 @@ while True:
     if best_bid_HOOK[1]['bid'] > best_ask_HOOK[1]['ask']:
         print('🛑HOOK🛑')
         print(f"Buy HOOK on {best_ask_HOOK[0]} at {best_ask_HOOK[1]['ask']} and sell on {best_bid_HOOK[0]} at {best_bid_HOOK[1]['bid']}\n")
+    else:
+        print("No arbitrage opportunity at the moment.\n")
+
+    if best_bid_DASH[1]['bid'] > best_ask_DASH[1]['ask']:
+        print('🛑DASH🛑')
+        print(f"Buy DASH on {best_ask_DASH[0]} at {best_ask_DASH[1]['ask']} and sell on {best_bid_DASH[0]} at {best_bid_DASH[1]['bid']}\n")
+    else:
+        print("No arbitrage opportunity at the moment.\n")
+
+    if best_bid_DODO[1]['bid'] > best_ask_DODO[1]['ask']:
+        print('🛑DODO🛑')
+        print(f"Buy DODO on {best_ask_DODO[0]} at {best_ask_DODO[1]['ask']} and sell on {best_bid_DODO[0]} at {best_bid_DODO[1]['bid']}\n")
+    else:
+        print("No arbitrage opportunity at the moment.\n")
+
+    if best_bid_EGLD[1]['bid'] > best_ask_EGLD[1]['ask']:
+        print('🛑EGLD🛑')
+        print(f"Buy EGLD on {best_ask_EGLD[0]} at {best_ask_EGLD[1]['ask']} and sell on {best_bid_EGLD[0]} at {best_bid_EGLD[1]['bid']}\n")
     else:
         print("No arbitrage opportunity at the moment.\n")
 
