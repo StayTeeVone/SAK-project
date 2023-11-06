@@ -21,3 +21,4 @@
 ✅ NEO
 ✅ QTUM
 ✅ EOS
+✅ SNT

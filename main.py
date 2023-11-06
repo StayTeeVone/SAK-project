@@ -109,6 +109,13 @@ exchanges_EOS = {
     "Gate": "https://api.gateio.ws/api/v4/spot/tickers?currency_pair=EOS_USDT"
 }
 
+exchanges_SNT = {
+    "Binance": "https://api.binance.com/api/v3/ticker/bookTicker?symbol=SNTUSDT",
+    "Bybit": "https://api.bybit.com/v2/public/tickers?symbol=SNTUSDT",
+    "Huobi": "https://api.huobi.pro/market/detail/merged?symbol=sntusdt",
+    "Gate": "https://api.gateio.ws/api/v4/spot/tickers?currency_pair=SNT_USDT"
+}
+
 # Функция для получения курсов с разных бирж
 def get_price(exchange, url):
     response = requests.get(url)
@@ -200,6 +207,11 @@ while True:
         ask, bid = get_price(exchange, url)
         prices_EOS[exchange] = {'ask': ask, 'bid': bid} 
 
+    prices_SNT = {}
+    for exchange, url in exchanges_SNT.items():
+        ask, bid = get_price(exchange, url)
+        prices_SNT[exchange] = {'ask': ask, 'bid': bid} 
+
     # Поиск наилучшей цены для покупки и продажи
     best_bid_SOL = max(prices_SOL.items(), key=lambda x: x[1]['bid'])
     best_ask_SOL = min(prices_SOL.items(), key=lambda x: x[1]['ask'])
@@ -242,6 +254,9 @@ while True:
 
     best_bid_EOS = max(prices_EOS.items(), key=lambda x: x[1]['bid'])
     best_ask_EOS = min(prices_EOS.items(), key=lambda x: x[1]['ask'])
+
+    best_bid_SNT = max(prices_SNT.items(), key=lambda x: x[1]['bid'])
+    best_ask_SNT = min(prices_SNT.items(), key=lambda x: x[1]['ask'])
 
     if best_bid_SOL[1]['bid'] > best_ask_SOL[1]['ask']:
         dif = (best_bid_SOL[1]['bid']) - (best_ask_SOL[1]['ask'])
@@ -353,6 +368,14 @@ while True:
         print(f"{best_ask_EOS[0]}/{best_bid_EOS[0]}  {best_ask_EOS[1]['ask']} / {best_bid_EOS[1]['bid']} \nDiff: {round(dif, 2)}\n")
     else:
         print('🛑EOS🛑')
+        print("Not found.\n")
+
+    if best_bid_SNT[1]['bid'] > best_ask_SNT[1]['ask']:
+        dif = (best_bid_SNT[1]['bid']) - (best_ask_SNT[1]['ask'])
+        print('🛑SNT🛑')
+        print(f"{best_ask_SNT[0]}/{best_bid_SNT[0]}  {best_ask_SNT[1]['ask']} / {best_bid_SNT[1]['bid']} \nDiff: {round(dif, 2)}\n")
+    else:
+        print('🛑SNT🛑')
         print("Not found.\n")
 
     print('\n')
