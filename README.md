@@ -24,4 +24,4 @@
 ✅ SNT
 ✅ BNT
 ✅ GAS
-✅ BNB.
+✅ BNB
