@@ -19,3 +19,4 @@
 ✅ EGLD
 ✅ LTC
 ✅ NEO
+✅ QTUM
