@@ -16,5 +16,3 @@
 ✅ HOOK
 ✅ DASH
 ✅ DODO
-✅ EGLD
-✅ LTC
