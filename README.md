@@ -22,3 +22,6 @@
 ✅ QTUM
 ✅ EOS
 ✅ SNT
+✅ BNT
+✅ GAS
+✅ BNB
