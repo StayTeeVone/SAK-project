@@ -87,6 +87,14 @@ exchanges_LTC = {
     "Gate": "https://api.gateio.ws/api/v4/spot/tickers?currency_pair=LTC_USDT"
 }
 
+exchanges_NEO = {
+    "Binance": "https://api.binance.com/api/v3/ticker/bookTicker?symbol=NEOUSDT",
+    "KuCoin": "https://api.kucoin.com/api/v1/market/orderbook/level1?symbol=NEO-USDT",
+    "Bybit": "https://api.bybit.com/v2/public/tickers?symbol=NEOUSDT",
+    "Huobi": "https://api.huobi.pro/market/detail/merged?symbol=neousdt",
+    "Gate": "https://api.gateio.ws/api/v4/spot/tickers?currency_pair=NEO_USDT"
+}
+
 # Функция для получения курсов с разных бирж
 def get_price(exchange, url):
     response = requests.get(url)
@@ -163,6 +171,11 @@ while True:
         ask, bid = get_price(exchange, url)
         prices_LTC[exchange] = {'ask': ask, 'bid': bid}
 
+    prices_NEO = {}
+    for exchange, url in exchanges_NEO.items():
+        ask, bid = get_price(exchange, url)
+        prices_NEO[exchange] = {'ask': ask, 'bid': bid}    
+
     # Поиск наилучшей цены для покупки и продажи
     best_bid_SOL = max(prices_SOL.items(), key=lambda x: x[1]['bid'])
     best_ask_SOL = min(prices_SOL.items(), key=lambda x: x[1]['ask'])
@@ -196,6 +209,9 @@ while True:
 
     best_bid_LTC = max(prices_LTC.items(), key=lambda x: x[1]['bid'])
     best_ask_LTC = min(prices_LTC.items(), key=lambda x: x[1]['ask'])
+
+    best_bid_NEO = max(prices_NEO.items(), key=lambda x: x[1]['bid'])
+    best_ask_NEO = min(prices_NEO.items(), key=lambda x: x[1]['ask'])
 
     if best_bid_SOL[1]['bid'] > best_ask_SOL[1]['ask']:
         print('🛑SOLANA🛑')
@@ -262,6 +278,12 @@ while True:
         print(f"Buy LTC on {best_ask_LTC[0]} at {best_ask_LTC[1]['ask']} and sell on {best_bid_LTC[0]} at {best_bid_LTC[1]['bid']}\n")
     else:
         print("No arbitrage opportunity at the moment.\n")
+
+    if best_bid_NEO[1]['bid'] > best_ask_NEO[1]['ask']:
+        print('🛑NEO🛑')
+        print(f"Buy NEO on {best_ask_NEO[0]} at {best_ask_NEO[1]['ask']} and sell on {best_bid_NEO[0]} at {best_bid_NEO[1]['bid']}\n")
+    else:
+        print("No arbitrage opportunity at the moment.\n")    
 
     print('\n')
 
