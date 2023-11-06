@@ -95,6 +95,13 @@ exchanges_NEO = {
     "Gate": "https://api.gateio.ws/api/v4/spot/tickers?currency_pair=NEO_USDT"
 }
 
+exchanges_QTUM = {
+    "Binance": "https://api.binance.com/api/v3/ticker/bookTicker?symbol=QTUMUSDT",
+    "Bybit": "https://api.bybit.com/v2/public/tickers?symbol=QTUMUSDT",
+    "Huobi": "https://api.huobi.pro/market/detail/merged?symbol=qtumusdt",
+    "Gate": "https://api.gateio.ws/api/v4/spot/tickers?currency_pair=QTUM_USDT"
+}
+
 # Функция для получения курсов с разных бирж
 def get_price(exchange, url):
     response = requests.get(url)
@@ -176,6 +183,11 @@ while True:
         ask, bid = get_price(exchange, url)
         prices_NEO[exchange] = {'ask': ask, 'bid': bid}    
 
+    prices_QTUM = {}
+    for exchange, url in exchanges_QTUM.items():
+        ask, bid = get_price(exchange, url)
+        prices_QTUM[exchange] = {'ask': ask, 'bid': bid} 
+
     # Поиск наилучшей цены для покупки и продажи
     best_bid_SOL = max(prices_SOL.items(), key=lambda x: x[1]['bid'])
     best_ask_SOL = min(prices_SOL.items(), key=lambda x: x[1]['ask'])
@@ -213,77 +225,112 @@ while True:
     best_bid_NEO = max(prices_NEO.items(), key=lambda x: x[1]['bid'])
     best_ask_NEO = min(prices_NEO.items(), key=lambda x: x[1]['ask'])
 
+    best_bid_QTUM = max(prices_QTUM.items(), key=lambda x: x[1]['bid'])
+    best_ask_QTUM = min(prices_QTUM.items(), key=lambda x: x[1]['ask'])
+
     if best_bid_SOL[1]['bid'] > best_ask_SOL[1]['ask']:
+        dif = (best_bid_SOL[1]['bid']) - (best_ask_SOL[1]['ask'])
         print('🛑SOLANA🛑')
-        print(f"Buy SOL on {best_ask_SOL[0]} at {best_ask_SOL[1]['ask']} and sell on {best_bid_SOL[0]} at {best_bid_SOL[1]['bid']}\n")
+        print(f"{best_ask_SOL[0]}/{best_bid_SOL[0]}  {best_ask_SOL[1]['ask']} / {best_bid_SOL[1]['bid']} \nDiff: {round(dif, 2)}\n")
     else:
-        print("No arbitrage opportunity at the moment.\n")
+        print('🛑SOLANA🛑')
+        print("Not found.\n")
 
     if best_bid_BTC[1]['bid'] > best_ask_BTC[1]['ask']:
+        dif = (best_bid_BTC[1]['bid']) - (best_ask_BTC[1]['ask'])
         print('🛑BITCOIN🛑')
-        print(f"Buy BTC on {best_ask_BTC[0]} at {best_ask_BTC[1]['ask']} and sell on {best_bid_BTC[0]} at {best_bid_BTC[1]['bid']}\n")
+        print(f"{best_ask_BTC[0]}/{best_bid_BTC[0]}  {best_ask_BTC[1]['ask']} / {best_bid_BTC[1]['bid']} \nDiff: {round(dif, 2)}\n")
     else:
-        print("No arbitrage opportunity at the moment.\n")
+        print('🛑BITCOIN🛑')
+        print("Not found.\n")
 
     if best_bid_ETH[1]['bid'] > best_ask_ETH[1]['ask']:
+        dif = (best_bid_ETH[1]['bid']) - (best_ask_ETH[1]['ask'])
         print('🛑ETHEREUM🛑')
-        print(f"Buy ETH on {best_ask_ETH[0]} at {best_ask_ETH[1]['ask']} and sell on {best_bid_ETH[0]} at {best_bid_ETH[1]['bid']}\n")
+        print(f"{best_ask_ETH[0]}/{best_bid_ETH[0]}  {best_ask_ETH[1]['ask']} / {best_bid_ETH[1]['bid']} \nDiff: {round(dif, 2)}\n")
     else:
-        print("No arbitrage opportunity at the moment.\n")
+        print('🛑ETHEREUM🛑')
+        print("Not found.\n")
 
     if best_bid_LINK[1]['bid'] > best_ask_LINK[1]['ask']:
+        dif = (best_bid_LINK[1]['bid']) - (best_ask_LINK[1]['ask'])
         print('🛑LINK🛑')
-        print(f"Buy LINK on {best_ask_LINK[0]} at {best_ask_LINK[1]['ask']} and sell on {best_bid_LINK[0]} at {best_bid_LINK[1]['bid']}\n")
+        print(f"{best_ask_LINK[0]}/{best_bid_LINK[0]}  {best_ask_LINK[1]['ask']} / {best_bid_LINK[1]['bid']} \nDiff: {round(dif, 2)}\n")
     else:
-        print("No arbitrage opportunity at the moment.\n")
+        print('🛑LINK🛑')
+        print("Not found.\n")
 
     if best_bid_DOGE[1]['bid'] > best_ask_DOGE[1]['ask']:
+        dif = (best_bid_DOGE[1]['bid']) - (best_ask_DOGE[1]['ask'])
         print('🛑DOGE🛑')
-        print(f"Buy DOGE on {best_ask_DOGE[0]} at {best_ask_DOGE[1]['ask']} and sell on {best_bid_DOGE[0]} at {best_bid_DOGE[1]['bid']}\n")
+        print(f"{best_ask_DOGE[0]}/{best_bid_DOGE[0]}  {best_ask_DOGE[1]['ask']} / {best_bid_DOGE[1]['bid']} \nDiff: {round(dif, 2)}\n")
     else:
-        print("No arbitrage opportunity at the moment.\n")
+        print('🛑DOGE🛑')
+        print("Not found.\n")
 
     if best_bid_CAKE[1]['bid'] > best_ask_CAKE[1]['ask']:
+        dif = (best_bid_CAKE[1]['bid']) - (best_ask_CAKE[1]['ask'])
         print('🛑CAKE🛑')
-        print(f"Buy CAKE on {best_ask_CAKE[0]} at {best_ask_CAKE[1]['ask']} and sell on {best_bid_CAKE[0]} at {best_bid_CAKE[1]['bid']}\n")
+        print(f"{best_ask_CAKE[0]}/{best_bid_CAKE[0]}  {best_ask_CAKE[1]['ask']} / {best_bid_CAKE[1]['bid']} \nDiff: {round(dif, 2)}\n")
     else:
-        print("No arbitrage opportunity at the moment.\n")
+        print('🛑CAKE🛑')
+        print("Not found.\n")
 
     if best_bid_HOOK[1]['bid'] > best_ask_HOOK[1]['ask']:
+        dif = (best_bid_HOOK[1]['bid']) - (best_ask_HOOK[1]['ask'])
         print('🛑HOOK🛑')
-        print(f"Buy HOOK on {best_ask_HOOK[0]} at {best_ask_HOOK[1]['ask']} and sell on {best_bid_HOOK[0]} at {best_bid_HOOK[1]['bid']}\n")
+        print(f"{best_ask_HOOK[0]}/{best_bid_HOOK[0]}  {best_ask_HOOK[1]['ask']} / {best_bid_HOOK[1]['bid']} \nDiff: {round(dif, 2)}\n")
     else:
-        print("No arbitrage opportunity at the moment.\n")
+        print('🛑HOOK🛑')
+        print("Not found.\n")
 
     if best_bid_DASH[1]['bid'] > best_ask_DASH[1]['ask']:
+        dif = (best_bid_DASH[1]['bid']) - (best_ask_DASH[1]['ask'])
         print('🛑DASH🛑')
-        print(f"Buy DASH on {best_ask_DASH[0]} at {best_ask_DASH[1]['ask']} and sell on {best_bid_DASH[0]} at {best_bid_DASH[1]['bid']}\n")
+        print(f"{best_ask_DASH[0]}/{best_bid_DASH[0]}  {best_ask_DASH[1]['ask']} / {best_bid_DASH[1]['bid']} \nDiff: {round(dif, 2)}\n")
     else:
-        print("No arbitrage opportunity at the moment.\n")
+        print('🛑DASH🛑')
+        print("Not found.\n")
 
     if best_bid_DODO[1]['bid'] > best_ask_DODO[1]['ask']:
+        dif = (best_bid_DODO[1]['bid']) - (best_ask_DODO[1]['ask'])
         print('🛑DODO🛑')
-        print(f"Buy DODO on {best_ask_DODO[0]} at {best_ask_DODO[1]['ask']} and sell on {best_bid_DODO[0]} at {best_bid_DODO[1]['bid']}\n")
+        print(f"{best_ask_DODO[0]}/{best_bid_DODO[0]}  {best_ask_DODO[1]['ask']} / {best_bid_DODO[1]['bid']} \nDiff: {round(dif, 2)}\n")
     else:
-        print("No arbitrage opportunity at the moment.\n")
+        print('🛑DODO🛑')
+        print("Not found.\n")
 
     if best_bid_EGLD[1]['bid'] > best_ask_EGLD[1]['ask']:
+        dif = (best_bid_EGLD[1]['bid']) - (best_ask_EGLD[1]['ask'])
         print('🛑EGLD🛑')
-        print(f"Buy EGLD on {best_ask_EGLD[0]} at {best_ask_EGLD[1]['ask']} and sell on {best_bid_EGLD[0]} at {best_bid_EGLD[1]['bid']}\n")
+        print(f"{best_ask_EGLD[0]}/{best_bid_EGLD[0]}  {best_ask_EGLD[1]['ask']} / {best_bid_EGLD[1]['bid']} \nDiff: {round(dif, 2)}\n")
     else:
-        print("No arbitrage opportunity at the moment.\n")
+        print('🛑EGLD🛑')
+        print("Not found.\n")
 
     if best_bid_LTC[1]['bid'] > best_ask_LTC[1]['ask']:
+        dif = (best_bid_LTC[1]['bid']) - (best_ask_LTC[1]['ask'])
         print('🛑LTC🛑')
-        print(f"Buy LTC on {best_ask_LTC[0]} at {best_ask_LTC[1]['ask']} and sell on {best_bid_LTC[0]} at {best_bid_LTC[1]['bid']}\n")
+        print(f"{best_ask_LTC[0]}/{best_bid_LTC[0]}  {best_ask_LTC[1]['ask']} / {best_bid_LTC[1]['bid']} \nDiff: {round(dif, 2)}\n")
     else:
-        print("No arbitrage opportunity at the moment.\n")
+        print('🛑LTC🛑')
+        print("Not found.\n")
 
     if best_bid_NEO[1]['bid'] > best_ask_NEO[1]['ask']:
+        dif = (best_bid_NEO[1]['bid']) - (best_ask_NEO[1]['ask'])
         print('🛑NEO🛑')
-        print(f"Buy NEO on {best_ask_NEO[0]} at {best_ask_NEO[1]['ask']} and sell on {best_bid_NEO[0]} at {best_bid_NEO[1]['bid']}\n")
+        print(f"{best_ask_NEO[0]}/{best_bid_NEO[0]}  {best_ask_NEO[1]['ask']} / {best_bid_NEO[1]['bid']} \nDiff: {round(dif, 2)}\n")
     else:
-        print("No arbitrage opportunity at the moment.\n")    
+        print('🛑NEO🛑')
+        print("Not found.\n")
+
+    if best_bid_QTUM[1]['bid'] > best_ask_QTUM[1]['ask']:
+        dif = (best_bid_QTUM[1]['bid']) - (best_ask_QTUM[1]['ask'])
+        print('🛑QTUM🛑')
+        print(f"{best_ask_QTUM[0]}/{best_bid_QTUM[0]}  {best_ask_QTUM[1]['ask']} / {best_bid_QTUM[1]['bid']} \nDiff: {round(dif, 2)}\n")
+    else:
+        print('🛑QTUM🛑')
+        print("Not found.\n")
 
     print('\n')
 
