@@ -17,3 +17,4 @@
 ✅ DASH
 ✅ DODO
 ✅ EGLD
+✅ LTC
