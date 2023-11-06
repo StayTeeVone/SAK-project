@@ -20,3 +20,4 @@
 ✅ LTC
 ✅ NEO
 ✅ QTUM
+✅ EOS
