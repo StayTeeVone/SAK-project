@@ -79,6 +79,14 @@ exchanges_EGLD = {
     "Gate": "https://api.gateio.ws/api/v4/spot/tickers?currency_pair=EGLD_USDT"
 }
 
+exchanges_LTC = {
+    "Binance": "https://api.binance.com/api/v3/ticker/bookTicker?symbol=LTCUSDT",
+    "KuCoin": "https://api.kucoin.com/api/v1/market/orderbook/level1?symbol=LTC-USDT",
+    "Bybit": "https://api.bybit.com/v2/public/tickers?symbol=LTCUSDT",
+    "Huobi": "https://api.huobi.pro/market/detail/merged?symbol=ltcusdt",
+    "Gate": "https://api.gateio.ws/api/v4/spot/tickers?currency_pair=LTC_USDT"
+}
+
 # Функция для получения курсов с разных бирж
 def get_price(exchange, url):
     response = requests.get(url)
@@ -150,6 +158,11 @@ while True:
         ask, bid = get_price(exchange, url)
         prices_EGLD[exchange] = {'ask': ask, 'bid': bid}
 
+    prices_LTC = {}
+    for exchange, url in exchanges_LTC.items():
+        ask, bid = get_price(exchange, url)
+        prices_LTC[exchange] = {'ask': ask, 'bid': bid}
+
     # Поиск наилучшей цены для покупки и продажи
     best_bid_SOL = max(prices_SOL.items(), key=lambda x: x[1]['bid'])
     best_ask_SOL = min(prices_SOL.items(), key=lambda x: x[1]['ask'])
@@ -180,6 +193,9 @@ while True:
 
     best_bid_EGLD = max(prices_EGLD.items(), key=lambda x: x[1]['bid'])
     best_ask_EGLD = min(prices_EGLD.items(), key=lambda x: x[1]['ask'])
+
+    best_bid_LTC = max(prices_LTC.items(), key=lambda x: x[1]['bid'])
+    best_ask_LTC = min(prices_LTC.items(), key=lambda x: x[1]['ask'])
 
     if best_bid_SOL[1]['bid'] > best_ask_SOL[1]['ask']:
         print('🛑SOLANA🛑')
@@ -238,6 +254,12 @@ while True:
     if best_bid_EGLD[1]['bid'] > best_ask_EGLD[1]['ask']:
         print('🛑EGLD🛑')
         print(f"Buy EGLD on {best_ask_EGLD[0]} at {best_ask_EGLD[1]['ask']} and sell on {best_bid_EGLD[0]} at {best_bid_EGLD[1]['bid']}\n")
+    else:
+        print("No arbitrage opportunity at the moment.\n")
+
+    if best_bid_LTC[1]['bid'] > best_ask_LTC[1]['ask']:
+        print('🛑LTC🛑')
+        print(f"Buy LTC on {best_ask_LTC[0]} at {best_ask_LTC[1]['ask']} and sell on {best_bid_LTC[0]} at {best_bid_LTC[1]['bid']}\n")
     else:
         print("No arbitrage opportunity at the moment.\n")
 
