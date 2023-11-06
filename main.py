@@ -116,6 +116,28 @@ exchanges_SNT = {
     "Gate": "https://api.gateio.ws/api/v4/spot/tickers?currency_pair=SNT_USDT"
 }
 
+exchanges_BNT = {
+    "Binance": "https://api.binance.com/api/v3/ticker/bookTicker?symbol=BNTUSDT",
+    "Bybit": "https://api.bybit.com/v2/public/tickers?symbol=BNTUSDT",
+    "Huobi": "https://api.huobi.pro/market/detail/merged?symbol=bntusdt",
+    "Gate": "https://api.gateio.ws/api/v4/spot/tickers?currency_pair=BNT_USDT"
+}
+
+exchanges_GAS = {
+    "Binance": "https://api.binance.com/api/v3/ticker/bookTicker?symbol=GASUSDT",
+    "Bybit": "https://api.bybit.com/v2/public/tickers?symbol=GASUSDT",
+    "Huobi": "https://api.huobi.pro/market/detail/merged?symbol=gasusdt",
+    "Gate": "https://api.gateio.ws/api/v4/spot/tickers?currency_pair=GAS_USDT"
+}
+
+exchanges_BNB = {
+    "Binance": "https://api.binance.com/api/v3/ticker/bookTicker?symbol=BNBUSDT",
+    "KuCoin": "https://api.kucoin.com/api/v1/market/orderbook/level1?symbol=BNB-USDT",
+    "Bybit": "https://api.bybit.com/v2/public/tickers?symbol=BNBUSDT",
+    "Huobi": "https://api.huobi.pro/market/detail/merged?symbol=bnbusdt",
+    "Gate": "https://api.gateio.ws/api/v4/spot/tickers?currency_pair=BNB_USDT"
+}
+
 # Функция для получения курсов с разных бирж
 def get_price(exchange, url):
     response = requests.get(url)
@@ -210,7 +232,22 @@ while True:
     prices_SNT = {}
     for exchange, url in exchanges_SNT.items():
         ask, bid = get_price(exchange, url)
-        prices_SNT[exchange] = {'ask': ask, 'bid': bid} 
+        prices_SNT[exchange] = {'ask': ask, 'bid': bid}
+
+    prices_BNT = {}
+    for exchange, url in exchanges_BNT.items():
+        ask, bid = get_price(exchange, url)
+        prices_BNT[exchange] = {'ask': ask, 'bid': bid} 
+
+    prices_GAS = {}
+    for exchange, url in exchanges_GAS.items():
+        ask, bid = get_price(exchange, url)
+        prices_GAS[exchange] = {'ask': ask, 'bid': bid} 
+
+    prices_BNB = {}
+    for exchange, url in exchanges_BNB.items():
+        ask, bid = get_price(exchange, url)
+        prices_BNB[exchange] = {'ask': ask, 'bid': bid} 
 
     # Поиск наилучшей цены для покупки и продажи
     best_bid_SOL = max(prices_SOL.items(), key=lambda x: x[1]['bid'])
@@ -257,6 +294,15 @@ while True:
 
     best_bid_SNT = max(prices_SNT.items(), key=lambda x: x[1]['bid'])
     best_ask_SNT = min(prices_SNT.items(), key=lambda x: x[1]['ask'])
+
+    best_bid_BNT = max(prices_BNT.items(), key=lambda x: x[1]['bid'])
+    best_ask_BNT = min(prices_BNT.items(), key=lambda x: x[1]['ask'])
+
+    best_bid_GAS = max(prices_GAS.items(), key=lambda x: x[1]['bid'])
+    best_ask_GAS = min(prices_GAS.items(), key=lambda x: x[1]['ask'])
+
+    best_bid_BNB = max(prices_BNB.items(), key=lambda x: x[1]['bid'])
+    best_ask_BNB = min(prices_BNB.items(), key=lambda x: x[1]['ask'])
 
     if best_bid_SOL[1]['bid'] > best_ask_SOL[1]['ask']:
         dif = (best_bid_SOL[1]['bid']) - (best_ask_SOL[1]['ask'])
@@ -376,6 +422,30 @@ while True:
         print(f"{best_ask_SNT[0]}/{best_bid_SNT[0]}  {best_ask_SNT[1]['ask']} / {best_bid_SNT[1]['bid']} \nDiff: {round(dif, 2)}\n")
     else:
         print('🛑SNT🛑')
+        print("Not found.\n")
+
+    if best_bid_BNT[1]['bid'] > best_ask_BNT[1]['ask']:
+        dif = (best_bid_BNT[1]['bid']) - (best_ask_BNT[1]['ask'])
+        print('🛑BNT🛑')
+        print(f"{best_ask_BNT[0]}/{best_bid_BNT[0]}  {best_ask_BNT[1]['ask']} / {best_bid_BNT[1]['bid']} \nDiff: {round(dif, 2)}\n")
+    else:
+        print('🛑BNT🛑')
+        print("Not found.\n")
+
+    if best_bid_GAS[1]['bid'] > best_ask_GAS[1]['ask']:
+        dif = (best_bid_GAS[1]['bid']) - (best_ask_GAS[1]['ask'])
+        print('🛑GAS🛑')
+        print(f"{best_ask_GAS[0]}/{best_bid_GAS[0]}  {best_ask_GAS[1]['ask']} / {best_bid_GAS[1]['bid']} \nDiff: {round(dif, 2)}\n")
+    else:
+        print('🛑GAS🛑')
+        print("Not found.\n")
+
+    if best_bid_BNB[1]['bid'] > best_ask_BNB[1]['ask']:
+        dif = (best_bid_BNB[1]['bid']) - (best_ask_BNB[1]['ask'])
+        print('🛑BNB🛑')
+        print(f"{best_ask_BNB[0]}/{best_bid_BNB[0]}  {best_ask_BNB[1]['ask']} / {best_bid_BNB[1]['bid']} \nDiff: {round(dif, 2)}\n")
+    else:
+        print('🛑BNB🛑')
         print("Not found.\n")
 
     print('\n')
